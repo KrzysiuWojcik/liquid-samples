@@ -1,0 +1,65 @@
+{% liquid
+
+comment
+
+    Execute GraphQL Query from Liquid template code
+
+    Requires StoreFront API Key
+    Use it from "Custom Liquid" block in your theme
+
+    Below you can find some variables you can change
+    Also change JS code that does stuff on data you receive
+      (in place of "// do whatever you want with your output")
+
+endcomment
+
+
+
+# enter your StoreFront Access Token (you can generate one in Create App section in settings of your store
+assign STOREFRONT_ACCESS_TOKEN = "xxx"
+
+
+# change if you need to
+assign API_VERSION = "2023-07"
+
+
+# your GraphQL query
+%}{% capture QUERY %}
+{
+      metaobjects(type: "model", first: 100) {
+
+          (your query goes here)
+
+      }
+}
+{% endcapture %}
+
+
+
+<script id="gql-token-script">
+
+  fetch('/api/{{API_VERSION}}/graphql.json', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': "{{STOREFRONT_ACCESS_TOKEN}}"
+    },
+    body: JSON.stringify({
+      query: `
+        {{QUERY}}
+      `
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const models = data.data.metaobjects.edges.map(({ node }) => ({
+
+      // do whatever you want with your output
+
+    }));
+
+    // remove this <script> tag from DOM to prevent client from seeing your StoreFront API Key
+    const script = document.getElementById('gql-token-script');
+    if (script) script.remove();
+  });
+</script>
