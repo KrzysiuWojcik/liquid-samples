@@ -1,0 +1,440 @@
+{%- ##### Creates 4x1 grid of video links (thumbnail + title) - also can be used as link to any other page! ##### -%}
+
+{%- style -%}
+    .ytc_main {
+        padding: {{ section.settings.top_padding }}px 0 {{ section.settings.bottom_padding }}px 0;
+        transform: scale({{ section.settings.scale_all }});
+    }
+    .ytc_linkcard {
+        text-decoration: none;
+        color: black;
+        font-weight: 700;
+        width: calc(25% - 17px);
+        overflow: hidden;
+        display: inline-block;
+        position: relative;
+        padding: 8px;
+        margin: 0 7px;
+        box-shadow: {{ section.settings.blur_h_offset }}px {{ section.settings.blur_v_offset }}px {{ section.settings.blur_blur }}px {{ section.settings.blur_spread }}px {{ section.settings.blur_color }};
+        background-color: {{ section.settings.card_background_color | color_to_hex }};
+        color: {{ section.settings.card_text_color | color_to_hex }};
+        border-radius: {{ section.settings.border_radius }}px;
+        transition: {{ section.settings.transition_time }}ms;
+        font-size: {{ section.settings.card_font_size }}px;
+    }
+    .ytc_linkcard:hover {
+        background-color: {{ section.settings.card_background_color_-_on_mouse_over | color_to_hex }};
+        color: {{ section.settings.card_text_color_-_on_mouse_over | color_to_hex }};
+        {%- if section.settings.expand_blur_on_mouse_over -%}
+        box-shadow: 0px 5px 36px -1px rgba(66, 68, 90, 0.35);
+        {%- endif -%}
+    }
+    .ytc_linkcard figure {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+    .ytc_linkcard figure img {
+        vertical-align: middle;
+        width: 100%;
+        height: auto;
+        border-radius: {{ section.settings.border_radius | minus: 8 }}px;
+    }
+    .ytc_linkcard figure figcaption {
+        height: {{ section.settings.title_space_height }}px;
+        max-height: {{ section.settings.title_space_height }}px;
+        overflow: hidden;
+        padding: 0 {{ section.settings.title_space_padding }}px;
+        width: 100%;
+        padding-top: 8px;
+    }
+    .ytc_cardspace {
+        display: block;
+    }
+    .ytc_linkseeall {
+        text-decoration: none;
+        margin: 16px calc(50% - {{ section.settings.see_all_width | divided_by: 2 }}px);
+        display: block;
+        min-width: {{ section.settings.see_all_width }}px;
+        min-height: {{ section.settings.see_all_height }}px;
+    }
+    .ytc_linkseeall button {
+        width: {{ section.settings.see_all_width }}px;
+        height: {{ section.settings.see_all_height }}px;
+        color: {{ section.settings.see_all_color }};
+        background-color: {{ section.settings.see_all_background_color }};
+        border-radius: {{ section.settings.see_all_border_radius }}px;
+        font-size: {{ section.settings.see_all_font_size }}px;
+        border: none;
+        padding: 0 16px;
+        cursor: pointer;
+        transition: {{ section.settings.transition_time }}ms;
+        {% if section.settings.button_blur %}
+        box-shadow: {{ section.settings.blur_h_offset }}px {{ section.settings.blur_v_offset }}px {{ section.settings.blur_blur }}px {{ section.settings.blur_spread }}px {{ section.settings.blur_color }};
+        {% endif %}
+    }
+    .ytc_linkseeall button:hover {
+        {%- if section.settings.see_all_apply_hover -%}
+        background-color: {{ section.settings.card_background_color_-_on_mouse_over | color_to_hex }};
+        color: {{ section.settings.card_text_color_-_on_mouse_over | color_to_hex }};
+        {%- endif -%}
+        {%- if section.settings.expand_blur_on_mouse_over and section.settings.button_blur -%}
+        box-shadow: box-shadow: {{ section.settings.blur_h_offset }}px {{ section.settings.blur_v_offset }}px {{ section.settings.blur_blur | plus: 16 }}px {{ section.settings.blur_spread | minus: 16 }}px {{ section.settings.blur_color }};
+        {%- endif -%}
+    }
+{%- endstyle -%}
+
+<section class="ytc_main">
+    <div class="ytc_cardspace">
+        <a href="{{ section.settings.video_1_url }}" class="ytc_linkcard" target="_blank">
+            <figure>
+                {%- assign video_1_preview = section.settings.video_1_preview -%}
+                {{ video_1_preview | image_url: width: video_1_preview.width | image_tag: class: 'ytc_thumbnail', loading: 'lazy' }}
+                <figcaption>{{ section.settings.video_1_title }}</figcaption>
+            </figure>
+        </a>
+        <a href="{{ section.settings.video_2_url }}" class="ytc_linkcard" target="_blank">
+            <figure>
+                {%- assign video_2_preview = section.settings.video_2_preview -%}
+                {{ video_2_preview | image_url: width: video_2_preview.width | image_tag: class: 'ytc_thumbnail', loading: 'lazy' }}
+                <figcaption>{{ section.settings.video_2_title }}</figcaption>
+            </figure>
+        </a>
+        <a href="{{ section.settings.video_3_url }}" class="ytc_linkcard" target="_blank">
+            <figure>
+                {%- assign video_3_preview = section.settings.video_3_preview -%}
+                {{ video_3_preview | image_url: width: video_3_preview.width | image_tag: class: 'ytc_thumbnail', loading: 'lazy' }}
+                <figcaption>{{ section.settings.video_3_title }}</figcaption>
+            </figure>
+        </a>
+        <a href="{{ section.settings.video_4_url }}" class="ytc_linkcard" target="_blank">
+            <figure>
+                {%- assign video_4_preview = section.settings.video_4_preview -%}
+                {{ video_4_preview | image_url: width: video_4_preview.width | image_tag: class: 'ytc_thumbnail', loading: 'lazy' }}
+                <figcaption>{{ section.settings.video_4_title }}</figcaption>
+            </figure>
+        </a>
+    </div>
+    <a href="{{ section.settings.see_all_link }}" target="_blank" class="ytc_linkseeall">
+        <button>{{ section.settings.see_all_text }}</button>
+    </a>
+</section>
+
+{% schema %}
+  {
+  "name": "Video Link Cards",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "video_1_preview",
+      "label": "Video 1 preview"
+    },
+    {
+      "type": "text",
+      "id": "video_1_title",
+      "label": "Video 1 title"
+    },
+    {
+      "type": "url",
+      "id": "video_1_url",
+      "label": "Video 1 URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_2_preview",
+      "label": "Video 2 preview"
+    },
+    {
+      "type": "text",
+      "id": "video_2_title",
+      "label": "Video 2 title"
+    },
+    {
+      "type": "url",
+      "id": "video_2_url",
+      "label": "Video 2 URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_3_preview",
+      "label": "Video 3 preview"
+    },
+    {
+      "type": "text",
+      "id": "video_3_title",
+      "label": "Video 3 title"
+    },
+    {
+      "type": "url",
+      "id": "video_3_url",
+      "label": "Video 3 URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_4_preview",
+      "label": "Video 4 preview"
+    },
+    {
+      "type": "text",
+      "id": "video_4_title",
+      "label": "Video 4 title"
+    },
+    {
+      "type": "url",
+      "id": "video_4_url",
+      "label": "Video 4 URL"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "see_all_text",
+      "label": "\"See all\" text",
+      "default": "See all"
+    },
+    {
+      "type": "url",
+      "id": "see_all_link",
+      "label": "\"See all\" link"
+    },
+    {
+      "type": "color",
+      "id": "see_all_background_color",
+      "label": "Background color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "see_all_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "see_all_apply_hover",
+      "label": "Apply color change when mouse is over",
+      "default": true,
+      "info": "When checked, button will change color in the same way as cards"
+    },
+    {
+      "type": "range",
+      "id": "see_all_border_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "see_all_font_size",
+      "label": "Font size",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "see_all_width",
+      "label": "Button width",
+      "min": 64,
+      "max": 512,
+      "step": 8,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "see_all_height",
+      "label": "Button height",
+      "min": 64,
+      "max": 512,
+      "step": 8,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "range",
+      "id": "top_padding",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "bottom_padding",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Card background color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color_-_on_mouse_over",
+      "label": "Card background color - on mouse over",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color_-_on_mouse_over",
+      "label": "Card text color - on mouse over",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "card_font_size",
+      "label": "Card font size",
+      "min": 4,
+      "max": 100,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "transition_time",
+      "label": "Transition time",
+      "min": 100,
+      "max": 2000,
+      "step": 100,
+      "default": 200,
+      "unit": "ms"
+    },
+    {
+      "type": "range",
+      "id": "title_space_padding",
+      "label": "Title space padding",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_space_height",
+      "label": "Title space height",
+      "min": 32,
+      "max": 128,
+      "step": 1,
+      "default": 72,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "scale_all",
+      "label": "Overall scale",
+      "min": 0.5,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1,
+      "unit": "x"
+    },
+    {
+      "type": "header",
+      "content": "Shadow"
+    },
+    {
+      "type": "checkbox",
+      "id": "expand_blur_on_mouse_over",
+      "label": "Expand shadow on mouse over",
+      "default": true,
+      "info": "When checked, card will look like if its raised"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_blur",
+      "label": "Apply shadow also to \"See all\" button",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "blur_h_offset",
+      "label": "Horizontal offset",
+      "min": -100,
+      "max": 100,
+      "step": 2,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "blur_v_offset",
+      "label": "Vertical offset",
+      "min": -100,
+      "max": 100,
+      "step": 2,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "blur_blur",
+      "label": "Blur",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "blur_spread",
+      "label": "Spread",
+      "min": -100,
+      "max": 100,
+      "step": 2,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "blur_color",
+      "label": "Shadow color",
+      "default": "#00000055"
+    },
+  ],
+  "presets": [
+    {
+      "name": "Video Link Cards"
+    }
+  ]
+}  
+{% endschema %}
